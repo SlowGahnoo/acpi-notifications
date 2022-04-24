@@ -235,6 +235,15 @@ PKG_CONFIG_ARGN:STRING=
 PKG_CONFIG_EXECUTABLE:FILEPATH=/sbin/pkg-config
 
 //Path to a library.
+pkgcfg_lib_deps_asound:FILEPATH=/usr/lib/libasound.so
+
+//Path to a library.
+pkgcfg_lib_deps_fmt:FILEPATH=/usr/lib/libfmt.so
+
+//Path to a library.
+pkgcfg_lib_deps_gdk_pixbuf-2.0:FILEPATH=/usr/lib/libgdk_pixbuf-2.0.so
+
+//Path to a library.
 pkgcfg_lib_deps_gio-2.0:FILEPATH=/usr/lib/libgio-2.0.so
 
 //Path to a library.
@@ -248,6 +257,9 @@ pkgcfg_lib_deps_glibmm-2.4:FILEPATH=/usr/lib/libglibmm-2.4.so
 
 //Path to a library.
 pkgcfg_lib_deps_gobject-2.0:FILEPATH=/usr/lib/libgobject-2.0.so
+
+//Path to a library.
+pkgcfg_lib_deps_notify:FILEPATH=/usr/lib/libnotify.so
 
 //Path to a library.
 pkgcfg_lib_deps_sigc-2.0:FILEPATH=/usr/lib/libsigc-2.0.so
@@ -408,43 +420,76 @@ FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/sbin/pkg-config][v1.8.0()]
 PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
-__pkg_config_arguments_deps:INTERNAL=REQUIRED;IMPORTED_TARGET;giomm-2.4
+__pkg_config_arguments_deps:INTERNAL=REQUIRED;IMPORTED_TARGET;libnotify;alsa;fmt
 __pkg_config_checked_deps:INTERNAL=1
-deps_CFLAGS:INTERNAL=-I/usr/include/giomm-2.4;-I/usr/lib/giomm-2.4/include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-4;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/glibmm-2.4;-I/usr/lib/glibmm-2.4/include;-pthread;-I/usr/include/sigc++-2.0;-I/usr/lib/sigc++-2.0/include
+deps_CFLAGS:INTERNAL=-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-4;-I/usr/include/libpng16;-I/usr/include/libmount;-I/usr/include/blkid;-pthread
 deps_CFLAGS_I:INTERNAL=
 deps_CFLAGS_OTHER:INTERNAL=-pthread
 deps_FOUND:INTERNAL=1
-deps_INCLUDEDIR:INTERNAL=/usr/include
-deps_INCLUDE_DIRS:INTERNAL=/usr/include/giomm-2.4;/usr/lib/giomm-2.4/include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-4;/usr/include/libmount;/usr/include/blkid;/usr/include/glibmm-2.4;/usr/lib/glibmm-2.4/include;/usr/include/sigc++-2.0;/usr/lib/sigc++-2.0/include
-deps_LDFLAGS:INTERNAL=-L/usr/lib;-lgiomm-2.4;-lgio-2.0;-lglibmm-2.4;-lgobject-2.0;-lglib-2.0;-lsigc-2.0
+deps_INCLUDEDIR:INTERNAL=
+deps_INCLUDE_DIRS:INTERNAL=/usr/include/gdk-pixbuf-2.0;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-4;/usr/include/libpng16;/usr/include/libmount;/usr/include/blkid
+deps_LDFLAGS:INTERNAL=-L/usr/lib;-lnotify;-lgdk_pixbuf-2.0;-lgio-2.0;-lgobject-2.0;-lglib-2.0;-lasound;-lfmt
 deps_LDFLAGS_OTHER:INTERNAL=
-deps_LIBDIR:INTERNAL=/usr/lib
-deps_LIBRARIES:INTERNAL=giomm-2.4;gio-2.0;glibmm-2.4;gobject-2.0;glib-2.0;sigc-2.0
+deps_LIBDIR:INTERNAL=
+deps_LIBRARIES:INTERNAL=notify;gdk_pixbuf-2.0;gio-2.0;gobject-2.0;glib-2.0;asound;fmt
 deps_LIBRARY_DIRS:INTERNAL=/usr/lib
 deps_LIBS:INTERNAL=
 deps_LIBS_L:INTERNAL=
 deps_LIBS_OTHER:INTERNAL=
 deps_LIBS_PATHS:INTERNAL=
-deps_MODULE_NAME:INTERNAL=giomm-2.4
-deps_PREFIX:INTERNAL=/usr
-deps_STATIC_CFLAGS:INTERNAL=-I/usr/include/giomm-2.4;-I/usr/lib/giomm-2.4/include;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-4;-I/usr/include/libmount;-I/usr/include/blkid;-I/usr/include/glibmm-2.4;-I/usr/lib/glibmm-2.4/include;-pthread;-I/usr/include/sigc++-2.0;-I/usr/lib/sigc++-2.0/include
+deps_MODULE_NAME:INTERNAL=
+deps_PREFIX:INTERNAL=
+deps_STATIC_CFLAGS:INTERNAL=-I/usr/include/gdk-pixbuf-2.0;-I/usr/include/glib-2.0;-I/usr/lib/glib-2.0/include;-I/usr/include/sysprof-4;-I/usr/include/libpng16;-I/usr/include/libmount;-I/usr/include/blkid;-pthread
 deps_STATIC_CFLAGS_I:INTERNAL=
 deps_STATIC_CFLAGS_OTHER:INTERNAL=-pthread
-deps_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/giomm-2.4;/usr/lib/giomm-2.4/include;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-4;/usr/include/libmount;/usr/include/blkid;/usr/include/glibmm-2.4;/usr/lib/glibmm-2.4/include;/usr/include/sigc++-2.0;/usr/lib/sigc++-2.0/include
-deps_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lgiomm-2.4;-lgio-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-lgobject-2.0;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-L/usr/lib;-lffi;-L/usr/lib;-lgmodule-2.0;-pthread;-L/usr/lib;-pthread;-lm;-L/usr/lib;-lpcre;-lz;-lmount;-L/usr/lib;-lblkid;-pthread;-lglibmm-2.4;-lgobject-2.0;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-lsysprof-capture-4;-pthread;-L/usr/lib;-lffi;-lsigc-2.0
-deps_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread
+deps_STATIC_INCLUDE_DIRS:INTERNAL=/usr/include/gdk-pixbuf-2.0;/usr/include/glib-2.0;/usr/lib/glib-2.0/include;/usr/include/sysprof-4;/usr/include/libpng16;/usr/include/libmount;/usr/include/blkid
+deps_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lnotify;-lgdk_pixbuf-2.0;-lm;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-L/usr/lib;-lffi;-L/usr/lib;-lpng16;-lm;-lz;-lm;-L/usr/lib;-L/usr/lib;-lz;-ljpeg;-ltiff;-lzstd;-llzma;-ljbig;-ljpeg;-lm;-pthread;-lm;-L/usr/lib;-lpcre;-lgmodule-2.0;-pthread;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-lgio-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-lgobject-2.0;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-L/usr/lib;-lffi;-L/usr/lib;-lgmodule-2.0;-pthread;-L/usr/lib;-pthread;-lm;-L/usr/lib;-lpcre;-L/usr/lib;-lblkid;-pthread;-lgio-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-lgobject-2.0;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-pthread;-L/usr/lib;-lffi;-L/usr/lib;-lgmodule-2.0;-pthread;-L/usr/lib;-pthread;-lm;-L/usr/lib;-lpcre;-lz;-lmount;-L/usr/lib;-lblkid;-pthread;-lglib-2.0;-pthread;-lm;-L/usr/lib;-lpcre;-lsysprof-capture-4;-pthread;-lasound;-lm;-ldl;-lpthread;-lrt;-lfmt
+deps_STATIC_LDFLAGS_OTHER:INTERNAL=-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread;-pthread
 deps_STATIC_LIBDIR:INTERNAL=
-deps_STATIC_LIBRARIES:INTERNAL=giomm-2.4;gio-2.0;m;pcre;gobject-2.0;glib-2.0;m;pcre;ffi;gmodule-2.0;m;pcre;z;mount;blkid;glibmm-2.4;gobject-2.0;glib-2.0;m;pcre;sysprof-capture-4;ffi;sigc-2.0
-deps_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib
+deps_STATIC_LIBRARIES:INTERNAL=notify;gdk_pixbuf-2.0;m;m;pcre;ffi;png16;m;z;m;z;jpeg;tiff;zstd;lzma;jbig;jpeg;m;m;pcre;gmodule-2.0;glib-2.0;m;pcre;gio-2.0;m;pcre;gobject-2.0;glib-2.0;m;pcre;ffi;gmodule-2.0;m;pcre;blkid;gio-2.0;m;pcre;gobject-2.0;glib-2.0;m;pcre;ffi;gmodule-2.0;m;pcre;z;mount;blkid;glib-2.0;m;pcre;sysprof-capture-4;asound;m;dl;pthread;rt;fmt
+deps_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib;/usr/lib
 deps_STATIC_LIBS:INTERNAL=
 deps_STATIC_LIBS_L:INTERNAL=
 deps_STATIC_LIBS_OTHER:INTERNAL=
 deps_STATIC_LIBS_PATHS:INTERNAL=
-deps_VERSION:INTERNAL=2.66.2
+deps_VERSION:INTERNAL=
+deps_alsa_INCLUDEDIR:INTERNAL=/usr/include
+deps_alsa_LIBDIR:INTERNAL=/usr/lib
+deps_alsa_MODULE_NAME:INTERNAL=alsa
+deps_alsa_PREFIX:INTERNAL=/usr
+deps_alsa_VERSION:INTERNAL=1.2.6.1
+deps_alsalib_INCLUDEDIR:INTERNAL=
+deps_alsalib_LIBDIR:INTERNAL=
+deps_alsalib_PREFIX:INTERNAL=
+deps_alsalib_VERSION:INTERNAL=
+deps_fmt_INCLUDEDIR:INTERNAL=/usr/include
+deps_fmt_LIBDIR:INTERNAL=/usr/lib
+deps_fmt_MODULE_NAME:INTERNAL=fmt
+deps_fmt_PREFIX:INTERNAL=/usr
+deps_fmt_VERSION:INTERNAL=8.1.1
 deps_giomm-2.4_INCLUDEDIR:INTERNAL=
 deps_giomm-2.4_LIBDIR:INTERNAL=
 deps_giomm-2.4_PREFIX:INTERNAL=
 deps_giomm-2.4_VERSION:INTERNAL=
+deps_libalsa_INCLUDEDIR:INTERNAL=
+deps_libalsa_LIBDIR:INTERNAL=
+deps_libalsa_PREFIX:INTERNAL=
+deps_libalsa_VERSION:INTERNAL=
+deps_libnotify_INCLUDEDIR:INTERNAL=/usr/include
+deps_libnotify_LIBDIR:INTERNAL=/usr/lib
+deps_libnotify_MODULE_NAME:INTERNAL=libnotify
+deps_libnotify_PREFIX:INTERNAL=/usr
+deps_libnotify_VERSION:INTERNAL=0.7.9
+deps_libnotifymm-1.0_INCLUDEDIR:INTERNAL=
+deps_libnotifymm-1.0_LIBDIR:INTERNAL=
+deps_libnotifymm-1.0_PREFIX:INTERNAL=
+deps_libnotifymm-1.0_VERSION:INTERNAL=
+//ADVANCED property for variable: pkgcfg_lib_deps_asound
+pkgcfg_lib_deps_asound-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_deps_fmt
+pkgcfg_lib_deps_fmt-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_deps_gdk_pixbuf-2.0
+pkgcfg_lib_deps_gdk_pixbuf-2.0-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_deps_gio-2.0
 pkgcfg_lib_deps_gio-2.0-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_deps_giomm-2.4
@@ -455,6 +500,8 @@ pkgcfg_lib_deps_glib-2.0-ADVANCED:INTERNAL=1
 pkgcfg_lib_deps_glibmm-2.4-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_deps_gobject-2.0
 pkgcfg_lib_deps_gobject-2.0-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: pkgcfg_lib_deps_notify
+pkgcfg_lib_deps_notify-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_deps_sigc-2.0
 pkgcfg_lib_deps_sigc-2.0-ADVANCED:INTERNAL=1
 prefix_result:INTERNAL=/usr/lib
