@@ -3,6 +3,7 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <unistd.h>
+#include <libnotify/notification.h>
 #include "Notification.h"
 
 
@@ -11,8 +12,8 @@ static const int s_recv_len = 4096;
 
 int main (int argc, char *argv[])
 {
-	app = Gio::Application::create("", Gio::APPLICATION_FLAGS_NONE);
-	app->register_application();
+	notify_init("acpi");
+	auto n = Volume();
 
 	int sock = 0;
 	int data_len = 0;
@@ -39,8 +40,8 @@ int main (int argc, char *argv[])
 	while (true) {
 		if ((data_len = recv(sock, recv_msg, s_recv_len, 0)) > 0) {
 			if (strncmp("button/volume", recv_msg, strlen("button/volume")) == 0) {
-				Notification n;
-				n.send_notification();
+				n.update();
+				n.show();
 			}
 		} else { 
 			if (data_len < 0) {
@@ -52,5 +53,6 @@ int main (int argc, char *argv[])
 			}
 		}
 	}
+	notify_uninit();
 	return 0;
 }
