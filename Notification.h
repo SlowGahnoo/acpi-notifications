@@ -1,21 +1,95 @@
-#include <giomm-2.4/giomm.h>
+#include <cstdint>
+#include <iostream>
+#include <libnotify/notification.h>
+#include <libnotify/notify.h>
+#include <fmt/core.h>
+#include <math.h>
 
-static Glib::RefPtr<Gio::Application> app;
+
+#include "alsaaudio.cpp"
+
+#ifndef __NOTIFICATION_H__
+#define __NOTIFICATION_H__
+
+class ProgressBar {
+public:
+	ProgressBar(size_t sz) : sz(sz) {
+	}
+
+	std::string getProgressString(int status) {
+		auto filled = (int)((double) sz * status / 100 + 0.5);
+		std::string p1 = "";
+		for (int i = 0; i < filled; i++) {
+			p1 += "▄";
+		}
+		for (int i = 0; i < sz - filled; i++) {
+			p1 += "▁";
+		}
+		return p1;
+	}
+private:
+	size_t sz;
+};
 
 class Notification {
 public:
-	Notification() {
-		n = Gio::Notification::create("");
-		n->set_body("");
-		n->set_icon(Gio::ThemedIcon::create("dialog-information"));
+	Notification() : title(""), desc(""), icon(""){
+		n = notify_notification_new("", "", "");
+		g_object_set (G_OBJECT (n), 
+				"id",         (uint64_t) this & 0xFFFFFFFF,
+				"summary",   title.c_str(),
+				"body",      desc.c_str(),
+				"icon-name", icon
+				);
 	}
 
-	void send_notification(void) {
-		n->set_title("Hello world");
-		n->set_body("This is an excample notification");
-		app->send_notification(n);
+	void updateParam() {
+		g_object_set (G_OBJECT (n), 
+				"summary",   title.c_str(),
+				"body",      desc.c_str(),
+				"icon-name", icon
+				);
+	}
+
+	~Notification() {
+		g_object_unref(G_OBJECT (n));
+	}
+
+	void show(void) {
+		notify_notification_show(n, NULL);
+	}
+protected:
+	NotifyNotification *n;
+	std::string title;
+	std::string desc;
+	const char *icon;
+};
+
+class Volume : public Notification {
+public:
+	Volume() : Notification(), m(), b(30) {
+		this->update();
+	}
+
+	void update() {
+		auto m = Mixer();
+		auto volume = m.getvolume();
+		this->title = fmt::format("Volume level: {}%", volume);
+		this->desc = b.getProgressString(volume);
+		this->icon = icons[(int)ceil((double) 0.03 * volume)];
+		updateParam();
 	}
 
 private:
-	Glib::RefPtr<Gio::Notification> n;
+	const char *icons[4] = {
+		    "audio-volume-muted",
+		    "audio-volume-low",
+		    "audio-volume-medium",
+		    "audio-volume-high" 
+	};
+
+	ProgressBar b;
+	Mixer m;
 };
+
+#endif
