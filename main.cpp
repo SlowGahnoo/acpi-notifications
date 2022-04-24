@@ -1,31 +1,56 @@
 #include <iostream>
-#include <giomm-2.4/giomm.h>
+#include <sys/un.h>
 #include <sys/socket.h>
+#include <string.h>
+#include <unistd.h>
+#include "Notification.h"
 
-static Glib::RefPtr<Gio::Application> app;
 
-class Notification {
-public:
-	Notification() {
-		n = Gio::Notification::create("");
-		n->set_body("");
-		n->set_icon(Gio::ThemedIcon::create("dialog-information"));
-	}
-
-	void send_notification(void) {
-		n->set_title("Hello world");
-		n->set_body("This is an excample notification");
-		app->send_notification(n);
-	}
-
-private:
-	Glib::RefPtr<Gio::Notification> n;
-};
-
+static const char *socket_path = "/var/run/acpid.socket";
+static const int s_recv_len = 4096;
 
 int main (int argc, char *argv[])
 {
 	app = Gio::Application::create("", Gio::APPLICATION_FLAGS_NONE);
 	app->register_application();
+
+	int sock = 0;
+	int data_len = 0;
+	char recv_msg[s_recv_len];
+	struct sockaddr_un remote;
+	memset(recv_msg, 0, s_recv_len * sizeof(char));
+
+	if ((sock = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
+		std::cerr << "Error on socket() call\n";
+		return 1;
+	}
+
+	remote.sun_family = AF_UNIX;
+	strcpy(remote.sun_path, socket_path);
+	data_len = strlen(remote.sun_path) + sizeof(remote.sun_family);
+
+	puts("Connecting to socket...");
+	if (connect(sock, (struct sockaddr*)&remote, data_len) == -1) {
+		std::cerr << "Error on connect() call\n";
+		return 1;
+	}
+
+	puts("Client connected");
+	while (true) {
+		if ((data_len = recv(sock, recv_msg, s_recv_len, 0)) > 0) {
+			if (strncmp("button/volume", recv_msg, strlen("button/volume")) == 0) {
+				Notification n;
+				n.send_notification();
+			}
+		} else { 
+			if (data_len < 0) {
+				std::cerr << "Error on recv() call\n";
+			} else {
+				std::cerr << "Server socket closed\n";
+				close(sock);
+				break;
+			}
+		}
+	}
 	return 0;
 }

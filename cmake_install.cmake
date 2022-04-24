@@ -1,4 +1,4 @@
-# Install script for directory: /HDD/Programming/C++
+# Install script for directory: /HDD/Programming/acpicpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/HDD/Programming/C++/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/HDD/Programming/acpicpp/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
