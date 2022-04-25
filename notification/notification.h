@@ -7,6 +7,7 @@
 #include <math.h>
 #include <glib.h>
 #include <gsound.h>
+#include <fstream>
 
 
 #include "../alsaaudio/alsaaudio.h"
@@ -35,7 +36,7 @@ private:
 
 class Notification {
 public:
-	Notification() : title(""), desc(""), icon(""){
+	Notification() : title(""), desc(""), icon("") {
 		n = notify_notification_new("", "", "");
 		g_object_set (G_OBJECT (n), 
 				"id",        rand(),
@@ -59,7 +60,7 @@ public:
 
 	void show(void) {
 		gsound_context_play_simple(sound_context, NULL, NULL, 
-				GSOUND_ATTR_EVENT_ID, "audio-volume-change",
+				GSOUND_ATTR_EVENT_ID, sound,
 				NULL);
 		notify_notification_show(n, NULL);
 	}
@@ -68,11 +69,13 @@ protected:
 	std::string title;
 	std::string desc;
 	const char *icon;
+	const char *sound;
 };
 
 class Volume : public Notification {
 public:
 	Volume() : Notification(), b(30) {
+		this->sound = "audio-volume-change";
 		this->update();
 	}
 
@@ -109,7 +112,6 @@ public:
 		bool muted = Mixer().muted();
 		if (muted) {
 			this->title ="Volume level: Muted";
-			this->desc = "";
 			this->icon = this->icons[0];
 			updateParam();
 		} else {
@@ -127,4 +129,24 @@ private:
 
 	ProgressBar b;
 	Mixer m;
+};
+
+class Backlight : public Notification {
+public:
+	Backlight() : Notification(), b(30) {
+		this->sound = "audio-volume-change";
+	}
+
+private:
+	const char *icons[5] = {
+		    "notification-display-brightness-low",
+		    "notification-display-brightness-medium",
+		    "notification-display-brightness-high",
+		    "notification-display-brightness-full",
+		    "notification-display-brightness-full"
+	};
+	std::ifstream fmaxbrightness;
+	std::ifstream fcurbrightness;
+	int max;
+	ProgressBar b;
 };
