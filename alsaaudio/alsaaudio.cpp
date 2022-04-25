@@ -11,7 +11,7 @@ int Mixer::getvolume(void)
 void Mixer::setvolume(long volume)
 {
 	/* Set the volume level by percentage */
-	snd_mixer_selem_set_playback_volume_all(elem, volume * max / 100);
+	snd_mixer_selem_set_playback_volume_all(elem,  (long) ((double) volume * max / 100));
 }
 
 bool Mixer::muted(void)

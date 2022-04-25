@@ -18,6 +18,10 @@ public:
 
 	}
 
+	~Socket() {
+		close(sock);
+	}
+
 	int connect(const char *ip);
 	char *recv(const size_t len);
 
