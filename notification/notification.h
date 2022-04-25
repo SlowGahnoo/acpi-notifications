@@ -45,6 +45,11 @@ public:
 				);
 	}
 
+	~Notification() {
+		g_object_unref(G_OBJECT (n));
+	}
+
+	/* Update parameters of notification gobject */
 	void updateParam() {
 		g_object_set (G_OBJECT (n), 
 				"summary",   title.c_str(),
@@ -53,10 +58,7 @@ public:
 				);
 	}
 
-	~Notification() {
-		g_object_unref(G_OBJECT (n));
-	}
-
+	/* Send and show the notification */
 	void show(void) {
 		gsound_context_play_simple(sound_context, NULL, NULL, 
 				GSOUND_ATTR_EVENT_ID, "audio-volume-change",
@@ -76,6 +78,7 @@ public:
 		this->update();
 	}
 
+	/* Increment/Decrement volume by 5% based on a flag (inc = 'u', dec = 'd') */
 	void volume(int flag) {
 		auto m = Mixer();
 		auto volume = m.getvolume();
@@ -96,6 +99,7 @@ public:
 		m.setvolume(volume);
 	}
 
+	/* Update notification's data */
 	void update() {
 		auto m = Mixer();
 		auto volume = m.getvolume();
@@ -105,6 +109,7 @@ public:
 		updateParam();
 	}
 
+	/* Mute/Unmute audio */
 	void toggle() {
 		bool muted = Mixer().muted();
 		if (muted) {

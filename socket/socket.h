@@ -22,7 +22,9 @@ public:
 		close(sock);
 	}
 
+	/* Connect to socket */
 	int connect(const char *ip);
+	/* Receive len bytes of data from socket (max is 4096) */
 	char *recv(const size_t len);
 
 private:

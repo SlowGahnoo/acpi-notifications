@@ -20,8 +20,11 @@ public:
 		snd_mixer_close(handle);
 	}
 
+	/* Get the volume level in percentage */
 	int getvolume(void);
+	/* Set the volume level by percentage */
 	void setvolume(long volume);
+	/* Check if volume is muted */
 	bool muted(void);
 	void unmute(void);
 	void mute(void);
