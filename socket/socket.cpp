@@ -2,7 +2,6 @@
 
 int Socket::connect(const char *ip) 
 {
-	puts("Connecting to socket...");
 	struct sockaddr_un addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sun_family = AF_UNIX;
@@ -12,7 +11,6 @@ int Socket::connect(const char *ip)
 		std::cerr << "Error on connect() call\n";
 		exit(1);
 	}
-	puts("Client connected");
 	return status;
 }
 

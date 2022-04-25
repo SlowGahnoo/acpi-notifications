@@ -11,3 +11,6 @@ notification/libalsaaudio.a
 alsaaudio/libalsaaudio.a
 CMakeCache.txt
 compile_commands.json
+socket/Makefile
+socket/libsocket.a
+Makefile

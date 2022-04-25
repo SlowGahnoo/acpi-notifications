@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.23)
+
 project(Notifications)
 
 set(CMAKE_CXX_COMPILER g++)
@@ -7,12 +9,12 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 add_executable(main main.cpp)
 
-add_subdirectory(alsaaudio notification socket)
+add_subdirectory(alsaaudio)
+add_subdirectory(notification)
+add_subdirectory(socket)
 
 
 find_package(PkgConfig REQUIRED)
