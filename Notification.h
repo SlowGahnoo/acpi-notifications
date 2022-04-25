@@ -3,6 +3,7 @@
 #include <libnotify/notification.h>
 #include <libnotify/notify.h>
 #include <fmt/core.h>
+#include <random>
 #include <math.h>
 
 
@@ -19,16 +20,16 @@ public:
 	std::string getProgressString(int status) {
 		auto filled = (int)((double) sz * status / 100 + 0.5);
 		std::string p1 = "";
-		for (int i = 0; i < filled; i++) {
+		for (auto i = 0; i < filled; i++) {
 			p1 += "▄";
 		}
-		for (int i = 0; i < sz - filled; i++) {
+		for (auto i = 0; i < sz - filled; i++) {
 			p1 += "▁";
 		}
 		return p1;
 	}
 private:
-	size_t sz;
+	int sz;
 };
 
 class Notification {
@@ -36,10 +37,10 @@ public:
 	Notification() : title(""), desc(""), icon(""){
 		n = notify_notification_new("", "", "");
 		g_object_set (G_OBJECT (n), 
-				"id",         (uint64_t) this & 0xFFFFFFFF,
+				"id",        rand(),
 				"summary",   title.c_str(),
 				"body",      desc.c_str(),
-				"icon-name", icon
+				"icon-name", icon, NULL
 				);
 	}
 
@@ -47,7 +48,7 @@ public:
 		g_object_set (G_OBJECT (n), 
 				"summary",   title.c_str(),
 				"body",      desc.c_str(),
-				"icon-name", icon
+				"icon-name", icon, NULL
 				);
 	}
 
@@ -67,7 +68,7 @@ protected:
 
 class Volume : public Notification {
 public:
-	Volume() : Notification(), m(), b(30) {
+	Volume() : Notification(), b(30) {
 		this->update();
 	}
 

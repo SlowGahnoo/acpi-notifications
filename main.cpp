@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <libnotify/notification.h>
+#include <libnotify/notify.h> 
 #include "Notification.h"
 
 
@@ -12,6 +13,8 @@ static const int s_recv_len = 4096;
 
 int main (int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
 	notify_init("acpi");
 	auto n = Volume();
 
@@ -42,6 +45,8 @@ int main (int argc, char *argv[])
 			if (strncmp("button/volume", recv_msg, strlen("button/volume")) == 0) {
 				n.update();
 				n.show();
+			} else if (strncmp("button/mute", recv_msg, strlen("button/mute")) == 0) {
+				printf("Mute\n");
 			}
 		} else { 
 			if (data_len < 0) {
