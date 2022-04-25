@@ -1,14 +1,15 @@
 #include <iostream>
+#include <libnotify/notification.h>
+#include <libnotify/notify.h>
 #include <string.h>
 #include <unistd.h>
-#include <libnotify/notification.h>
-#include <libnotify/notify.h> 
+
 #include "notification/notification.h"
 #include "socket/socket.h"
 
 static const char *socket_path = "/var/run/acpid.socket";
 
-int main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	(void)argc;
 	(void)argv;
@@ -18,14 +19,16 @@ int main (int argc, char *argv[])
 	s.connect(socket_path);
 	while (true) {
 		char *recv_msg = s.recv(4096);
-			if (strncmp("button/volume", recv_msg, strlen("button/volume")) == 0) {
-				n.volume(recv_msg[strlen("button/volume")]);
-				n.update();
-				n.show();
-			} else if (strncmp("button/mute", recv_msg, strlen("button/mute")) == 0) {
-				n.toggle();
-				n.show();
-			}
+		if (strncmp("button/volume", recv_msg,
+			    strlen("button/volume")) == 0) {
+			n.volume(recv_msg[strlen("button/volume")]);
+			n.update();
+			n.show();
+		} else if (strncmp("button/mute", recv_msg,
+				   strlen("button/mute")) == 0) {
+			n.toggle();
+			n.show();
+		}
 	}
 	notify_uninit();
 	return 0;
