@@ -5,12 +5,13 @@
 #include <fmt/core.h>
 #include <random>
 #include <math.h>
+#include <glib.h>
+#include <gsound.h>
 
 
-#include "alsaaudio.cpp"
+#include "../alsaaudio/alsaaudio.h"
 
-#ifndef __NOTIFICATION_H__
-#define __NOTIFICATION_H__
+static GSoundContext *sound_context = gsound_context_new(NULL, NULL);
 
 class ProgressBar {
 public:
@@ -57,6 +58,9 @@ public:
 	}
 
 	void show(void) {
+		gsound_context_play_simple(sound_context, NULL, NULL, 
+				GSOUND_ATTR_EVENT_ID, "audio-volume-change",
+				NULL);
 		notify_notification_show(n, NULL);
 	}
 protected:
@@ -72,6 +76,26 @@ public:
 		this->update();
 	}
 
+	void volume(int flag) {
+		auto m = Mixer();
+		auto volume = m.getvolume();
+		auto new_val = 0;
+		switch (flag) {
+			case 'u':
+				new_val = volume + 5;
+				volume = (new_val < 100) ? new_val : 100;
+				break;
+			case 'd':
+				new_val = volume - 5;
+				volume = (new_val > 0) ? new_val : 0;
+				break;
+			default:
+				std::cerr << "Unknown flag passed: '" << flag << "'\n";
+				break;
+		}
+		m.setvolume(volume);
+	}
+
 	void update() {
 		auto m = Mixer();
 		auto volume = m.getvolume();
@@ -79,6 +103,19 @@ public:
 		this->desc = b.getProgressString(volume);
 		this->icon = icons[(int)ceil((double) 0.03 * volume)];
 		updateParam();
+	}
+
+	void toggle() {
+		bool muted = Mixer().muted();
+		if (muted) {
+			std::cout << muted << std::endl;
+			this->title ="Volume level: Muted";
+			this->desc = "";
+			this->icon = this->icons[0];
+			updateParam();
+		} else {
+			this->update();
+		}
 	}
 
 private:
@@ -92,5 +129,3 @@ private:
 	ProgressBar b;
 	Mixer m;
 };
-
-#endif

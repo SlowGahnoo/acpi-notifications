@@ -129,6 +129,19 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
+#=============================================================================
+# Target rules for targets named alsaaudio
+
+# Build rule for target.
+alsaaudio: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 alsaaudio
+.PHONY : alsaaudio
+
+# fast build rule for target.
+alsaaudio/fast:
+	$(MAKE) $(MAKESILENT) -f notification/CMakeFiles/alsaaudio.dir/build.make notification/CMakeFiles/alsaaudio.dir/build
+.PHONY : alsaaudio/fast
+
 # target to build an object file
 main.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.o
@@ -152,6 +165,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... alsaaudio"
 	@echo "... main"
 	@echo "... main.o"
 	@echo "... main.i"

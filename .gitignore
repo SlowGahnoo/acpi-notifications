@@ -5,3 +5,9 @@ main
 Debug
 build
 cmake_install.cmake
+alsaaudio/Makefile
+notification/Makefile
+notification/libalsaaudio.a
+alsaaudio/libalsaaudio.a
+CMakeCache.txt
+compile_commands.json

@@ -5,11 +5,18 @@
 #include <unistd.h>
 #include <libnotify/notification.h>
 #include <libnotify/notify.h> 
-#include "Notification.h"
+#include "notification/notification.h"
 
 
 static const char *socket_path = "/var/run/acpid.socket";
 static const int s_recv_len = 4096;
+
+/* class Socket { */
+/* public: */
+/* 	Socket() { */
+/*  */
+/* 	} */
+/* }; */
 
 int main (int argc, char *argv[])
 {
@@ -43,10 +50,12 @@ int main (int argc, char *argv[])
 	while (true) {
 		if ((data_len = recv(sock, recv_msg, s_recv_len, 0)) > 0) {
 			if (strncmp("button/volume", recv_msg, strlen("button/volume")) == 0) {
+				n.volume(recv_msg[strlen("button/volume")]);
 				n.update();
 				n.show();
 			} else if (strncmp("button/mute", recv_msg, strlen("button/mute")) == 0) {
-				printf("Mute\n");
+				n.toggle();
+				n.show();
 			}
 		} else { 
 			if (data_len < 0) {
