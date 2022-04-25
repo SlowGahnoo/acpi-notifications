@@ -1,13 +1,12 @@
 #include <cstdint>
+#include <fmt/core.h>
+#include <glib.h>
+#include <gsound.h>
 #include <iostream>
 #include <libnotify/notification.h>
 #include <libnotify/notify.h>
-#include <fmt/core.h>
-#include <random>
 #include <math.h>
-#include <glib.h>
-#include <gsound.h>
-
+#include <random>
 
 #include "../alsaaudio/alsaaudio.h"
 
@@ -15,11 +14,13 @@ static GSoundContext *sound_context = gsound_context_new(NULL, NULL);
 
 class ProgressBar {
 public:
-	ProgressBar(size_t sz) : sz(sz) {
+	ProgressBar(size_t sz) : sz(sz)
+	{
 	}
 
-	std::string getProgressString(int status) {
-		auto filled = (int)((double) sz * status / 100 + 0.5);
+	std::string getProgressString(int status)
+	{
+		auto filled = (int)((double)sz * status / 100 + 0.5);
 		std::string p1 = "";
 		for (auto i = 0; i < filled; i++) {
 			p1 += "▄";
@@ -29,42 +30,42 @@ public:
 		}
 		return p1;
 	}
+
 private:
 	int sz;
 };
 
 class Notification {
 public:
-	Notification() : title(""), desc(""), icon(""){
+	Notification() : title(""), desc(""), icon("")
+	{
 		n = notify_notification_new("", "", "");
-		g_object_set (G_OBJECT (n), 
-				"id",        rand(),
-				"summary",   title.c_str(),
-				"body",      desc.c_str(),
-				"icon-name", icon, NULL
-				);
+		g_object_set(G_OBJECT(n), "id", rand(), "summary",
+			     title.c_str(), "body", desc.c_str(), "icon-name",
+			     icon, NULL);
 	}
 
-	~Notification() {
-		g_object_unref(G_OBJECT (n));
+	~Notification()
+	{
+		g_object_unref(G_OBJECT(n));
 	}
 
 	/* Update parameters of notification gobject */
-	void updateParam() {
-		g_object_set (G_OBJECT (n), 
-				"summary",   title.c_str(),
-				"body",      desc.c_str(),
-				"icon-name", icon, NULL
-				);
+	void updateParam()
+	{
+		g_object_set(G_OBJECT(n), "summary", title.c_str(), "body",
+			     desc.c_str(), "icon-name", icon, NULL);
 	}
 
 	/* Send and show the notification */
-	void show(void) {
-		gsound_context_play_simple(sound_context, NULL, NULL, 
-				GSOUND_ATTR_EVENT_ID, "audio-volume-change",
-				NULL);
+	void show(void)
+	{
+		gsound_context_play_simple(sound_context, NULL, NULL,
+					   GSOUND_ATTR_EVENT_ID,
+					   "audio-volume-change", NULL);
 		notify_notification_show(n, NULL);
 	}
+
 protected:
 	NotifyNotification *n;
 	std::string title;
@@ -74,46 +75,51 @@ protected:
 
 class Volume : public Notification {
 public:
-	Volume() : Notification(), b(30) {
+	Volume() : Notification(), b(30)
+	{
 		this->update();
 	}
 
-	/* Increment/Decrement volume by 5% based on a flag (inc = 'u', dec = 'd') */
-	void volume(int flag) {
+	/* Increment/Decrement volume by 5% based on a flag (inc = 'u', dec =
+	 * 'd') */
+	void volume(int flag)
+	{
 		auto m = Mixer();
 		auto volume = m.getvolume();
 		auto new_val = 0;
 		switch (flag) {
-			case 'u':
-				new_val = volume + 5;
-				volume = (new_val < 100) ? new_val : 100;
-				break;
-			case 'd':
-				new_val = volume - 5;
-				volume = (new_val > 0) ? new_val : 0;
-				break;
-			default:
-				std::cerr << "Unknown flag passed: '" << flag << "'\n";
-				break;
+		case 'u':
+			new_val = volume + 5;
+			volume = (new_val < 100) ? new_val : 100;
+			break;
+		case 'd':
+			new_val = volume - 5;
+			volume = (new_val > 0) ? new_val : 0;
+			break;
+		default:
+			std::cerr << "Unknown flag passed: '" << flag << "'\n";
+			break;
 		}
 		m.setvolume(volume);
 	}
 
 	/* Update notification's data */
-	void update() {
+	void update()
+	{
 		auto m = Mixer();
 		auto volume = m.getvolume();
 		this->title = fmt::format("Volume level: {}%", volume);
 		this->desc = b.getProgressString(volume);
-		this->icon = icons[(int)ceil((double) 0.03 * volume)];
+		this->icon = icons[(int)ceil((double)0.03 * volume)];
 		updateParam();
 	}
 
 	/* Mute/Unmute audio */
-	void toggle() {
+	void toggle()
+	{
 		bool muted = Mixer().muted();
 		if (muted) {
-			this->title ="Volume level: Muted";
+			this->title = "Volume level: Muted";
 			this->desc = "";
 			this->icon = this->icons[0];
 			updateParam();
@@ -123,12 +129,8 @@ public:
 	}
 
 private:
-	const char *icons[4] = {
-		    "audio-volume-muted",
-		    "audio-volume-low",
-		    "audio-volume-medium",
-		    "audio-volume-high" 
-	};
+	const char *icons[4] = { "audio-volume-muted", "audio-volume-low",
+				 "audio-volume-medium", "audio-volume-high" };
 
 	ProgressBar b;
 	Mixer m;

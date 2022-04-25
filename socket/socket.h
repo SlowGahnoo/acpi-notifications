@@ -1,13 +1,14 @@
-#include <sys/un.h>
-#include <sys/socket.h>
-#include <unistd.h>
 #include <iostream>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <unistd.h>
 
 static const int s_recv_len = 4096;
 
 class Socket {
 public:
-	Socket(const int __domain, const int __type, const int __protocol) {
+	Socket(const int __domain, const int __type, const int __protocol)
+	{
 		sock = socket(__domain, __type, __protocol);
 		memset(recv_msg, 0, s_recv_len * sizeof(char));
 
@@ -15,10 +16,10 @@ public:
 			std::cerr << "Error on socket() call\n";
 			exit(1);
 		}
-
 	}
 
-	~Socket() {
+	~Socket()
+	{
 		close(sock);
 	}
 
