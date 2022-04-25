@@ -108,7 +108,6 @@ public:
 	void toggle() {
 		bool muted = Mixer().muted();
 		if (muted) {
-			std::cout << muted << std::endl;
 			this->title ="Volume level: Muted";
 			this->desc = "";
 			this->icon = this->icons[0];
