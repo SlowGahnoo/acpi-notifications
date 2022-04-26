@@ -80,8 +80,8 @@ public:
 		this->update();
 	}
 
-	/* Increment/Decrement volume by 5% based on a flag (inc = 'u', dec =
-	 * 'd') */
+	/* Increment/Decrement volume by 5% based on a flag
+	 * (inc = 'u', dec = 'd') */
 	void volume(int flag)
 	{
 		auto m = Mixer();
@@ -120,7 +120,6 @@ public:
 		bool muted = Mixer().muted();
 		if (muted) {
 			this->title = "Volume level: Muted";
-			this->desc = "";
 			this->icon = this->icons[0];
 			updateParam();
 		} else {

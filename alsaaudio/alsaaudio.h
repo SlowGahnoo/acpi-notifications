@@ -1,5 +1,6 @@
 #include <alsa/asoundlib.h>
 #include <alsa/mixer.h>
+#include <math.h>
 
 class Mixer {
 public:
@@ -23,7 +24,7 @@ public:
 	}
 
 	/* Get the volume level in percentage */
-	int getvolume(void);
+	long getvolume(void);
 	/* Set the volume level by percentage */
 	void setvolume(long volume);
 	/* Check if volume is muted */
