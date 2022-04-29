@@ -7,22 +7,8 @@ static const int s_recv_len = 4096;
 
 class Socket {
 public:
-	Socket(const int __domain, const int __type, const int __protocol)
-	{
-		sock = socket(__domain, __type, __protocol);
-		memset(recv_msg, 0, s_recv_len * sizeof(char));
-
-		if ((sock = socket(__domain, __type, 0)) == -1) {
-			std::cerr << "Error on socket() call\n";
-			exit(1);
-		}
-	}
-
-	~Socket()
-	{
-		close(sock);
-	}
-
+	Socket(const int __domain, const int __type, const int __protocol);
+	~Socket();
 	/* Connect to socket */
 	int connect(const char *ip);
 	/* Receive len bytes of data from socket (max is 4096) */
