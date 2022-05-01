@@ -1,5 +1,22 @@
 #include "socket.h"
 
+Socket::Socket(const int __domain, const int __type, const int __protocol)
+{
+	sock = socket(__domain, __type, __protocol);
+	memset(recv_msg, 0, s_recv_len * sizeof(char));
+
+	if ((sock = socket(__domain, __type, 0)) == -1) {
+		std::cerr << "Error on socket() call\n";
+		exit(1);
+	}
+
+}
+
+Socket::~Socket()
+{
+	close(sock);
+}
+
 int Socket::connect(const char *ip)
 {
 	struct sockaddr_un addr;
