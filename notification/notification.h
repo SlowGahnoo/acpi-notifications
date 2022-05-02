@@ -147,7 +147,43 @@ class Backlight : public Notification {
 public:
 	Backlight() : Notification(), b(30)
 	{
+		std::ifstream(max_path) >> max;
+		std::ifstream(level_path) >> level;
+		perc = round(100 * level / max);
 		this->sound = "audio-volume-change";
+	}
+
+	void set(int flag)
+	{
+		long val = (long)round(perc);
+		long new_val = 0;
+		std::ofstream brightness(level_path);
+		switch (flag) {
+		case 'u':
+			new_val = val + 5;
+			val = (new_val < 100) ? new_val : 100;
+			break;
+		case 'd':
+			new_val = val - 5;
+			val = (new_val > 0) ? new_val : 0;
+			break;
+		default:
+			std::cerr << "Unknown flag passed: '" << flag << "'\n";
+			break;
+		}
+		brightness << (long) round((double)(new_val * max / 100));
+	}
+
+	void update() 
+	{
+		std::ifstream(max_path) >> max;
+		std::ifstream(level_path) >> level;
+		perc = round(100 * level / max);
+		this->title = fmt::format("Backlight level: {}%", perc);
+		this->desc = b.getProgressString(perc);
+		this->icon = icons[int(perc / 25)];
+		this->updateParam();
+
 	}
 
 private:
@@ -158,8 +194,10 @@ private:
 		 "notification-display-brightness-full",
 		 "notification-display-brightness-full" 
 	};
-	std::ifstream fmaxbrightness;
-	std::ifstream fcurbrightness;
-	int max;
+
+	const char *level_path = "/sys/class/backlight/intel_backlight/brightness";
+	const char *max_path = "/sys/class/backlight/intel_backlight/max_brightness";
+	double level, max;
+	double perc;
 	ProgressBar b;
 };
