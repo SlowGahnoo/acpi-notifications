@@ -38,6 +38,18 @@ private:
 	int sz;
 };
 
+class NotificationApplication {
+public:
+	const char *app_name;
+	NotificationApplication(const char *app_name) : app_name(app_name) {
+		notify_init(app_name);
+	}
+	~NotificationApplication() {
+		notify_uninit();
+	}
+private:
+};
+
 class Notification {
 public:
 	Notification() : title(""), desc(""), icon("")
@@ -60,13 +72,13 @@ public:
 			     desc.c_str(), "icon-name", icon, NULL);
 	}
 
+	/* Send and show the notification */
 	void show(void)
 	{
 		gsound_context_play_simple(sound_context, NULL, NULL,
 					   GSOUND_ATTR_EVENT_ID, sound, NULL);
 		notify_notification_show(n, NULL);
 	}
-	/* Send and show the notification */
 
 protected:
 	NotifyNotification *n;
@@ -132,12 +144,8 @@ public:
 	}
 
 private:
-	const char *icons[4] = { 
-		"audio-volume-muted", 
-		"audio-volume-low",
-		"audio-volume-medium", 
-		"audio-volume-high" 
-	};
+	const char *icons[4] = { "audio-volume-muted", "audio-volume-low",
+				 "audio-volume-medium", "audio-volume-high" };
 
 	ProgressBar b;
 	Mixer m;
@@ -171,10 +179,10 @@ public:
 			std::cerr << "Unknown flag passed: '" << flag << "'\n";
 			break;
 		}
-		brightness << (long) round((double)(new_val * max / 100));
+		brightness << (long)round((double)(new_val * max / 100));
 	}
 
-	void update() 
+	void update()
 	{
 		std::ifstream(max_path) >> max;
 		std::ifstream(level_path) >> level;
@@ -183,20 +191,19 @@ public:
 		this->desc = b.getProgressString(perc);
 		this->icon = icons[int(perc / 25)];
 		this->updateParam();
-
 	}
 
 private:
-	const char *icons[5] = { 
-		 "notification-display-brightness-low",
-		 "notification-display-brightness-medium",
-		 "notification-display-brightness-high",
-		 "notification-display-brightness-full",
-		 "notification-display-brightness-full" 
-	};
+	const char *icons[5] = { "notification-display-brightness-low",
+				 "notification-display-brightness-medium",
+				 "notification-display-brightness-high",
+				 "notification-display-brightness-full",
+				 "notification-display-brightness-full" };
 
-	const char *level_path = "/sys/class/backlight/intel_backlight/brightness";
-	const char *max_path = "/sys/class/backlight/intel_backlight/max_brightness";
+	const char *level_path =
+		"/sys/class/backlight/intel_backlight/brightness";
+	const char *max_path =
+		"/sys/class/backlight/intel_backlight/max_brightness";
 	double level, max;
 	double perc;
 	ProgressBar b;

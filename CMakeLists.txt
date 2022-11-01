@@ -8,9 +8,9 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Os")
+# set(CMAKE_CXX_FLAGS_DEBUG "-g")
+# set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(main main.cpp)
 

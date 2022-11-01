@@ -19,17 +19,33 @@ Mixer::~Mixer()
 	snd_mixer_close(handle);
 }
 
+long logarithmic_scale(long volume, long max) 
+{
+	constexpr long N = 60;
+	auto new_value = 100 + N * (log10(((double)volume + max * pow(10, (double) -100 / N)) / max));
+	return (long) round(new_value);
+}
+
+long inverse_logarithmic_scale(long volume, long max)
+{
+	constexpr long N = 60;
+	auto new_value = max * pow(10, (double)(volume - 100) / N) - max * pow(10, (double) -100 / N);
+	return new_value;
+}
+
 
 long Mixer::getvolume(void) 
 {
 	long volume;
 	snd_mixer_selem_get_playback_volume(elem, SND_MIXER_SCHN_FRONT_LEFT, &volume);
-	return (long) round((double) volume / max * 100);
+	auto new_volume = logarithmic_scale(volume, max);
+	return new_volume;
 }
 
 void Mixer::setvolume(long volume)
 {
-	snd_mixer_selem_set_playback_volume_all(elem,  (long) round((double) volume * max / 100));
+	auto new_volume = inverse_logarithmic_scale(volume, max);
+	snd_mixer_selem_set_playback_volume_all(elem,  new_volume);
 }
 
 bool Mixer::muted(void)
